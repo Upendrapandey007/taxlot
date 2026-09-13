@@ -1,8 +1,0 @@
-logging:
-  level:
-    com.taxlot: DEBUG
-    org.springframework.security: DEBUG
-
-spring:
-  flyway:
-    out-of-order: true

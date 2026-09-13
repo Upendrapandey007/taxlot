@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: organization-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/taxlot_organization}
+    username: ${DB_USERNAME:taxlot}
+    password: ${DB_PASSWORD:taxlot}
+  flyway:
+    enabled: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+  jackson:
+    naming-strategy: com.fasterxml.jackson.databind.PropertyNamingStrategies$SnakeCaseStrategy
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+server:
+  port: 8083
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

@@ -1,0 +1,133 @@
+{
+  "vhosts": [{ "name": "/" }],
+  "exchanges": [
+    {
+      "name":       "taxlot.events",
+      "vhost":      "/",
+      "type":       "topic",
+      "durable":    true,
+      "auto_delete": false,
+      "arguments":  {}
+    },
+    {
+      "name":       "taxlot.dlx",
+      "vhost":      "/",
+      "type":       "direct",
+      "durable":    true,
+      "auto_delete": false,
+      "arguments":  {}
+    }
+  ],
+  "queues": [
+    {
+      "name":  "user-service.user-registered",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "taxlot.dlx",
+        "x-dead-letter-routing-key": "user-service.user-registered.dead",
+        "x-message-ttl": 86400000
+      }
+    },
+    {
+      "name":  "user-service.user-registered.dead",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name":  "accounting-service.organization-created",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "taxlot.dlx",
+        "x-dead-letter-routing-key": "accounting-service.organization-created.dead",
+        "x-message-ttl": 86400000
+      }
+    },
+    {
+      "name":  "accounting-service.organization-created.dead",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name":  "notification-service.invoice-issued",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "taxlot.dlx",
+        "x-dead-letter-routing-key": "notification-service.invoice-issued.dead",
+        "x-message-ttl": 86400000
+      }
+    },
+    {
+      "name":  "notification-service.invoice-issued.dead",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source":           "taxlot.events",
+      "vhost":            "/",
+      "destination":      "user-service.user-registered",
+      "destination_type": "queue",
+      "routing_key":      "auth.user.registered",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.events",
+      "vhost":            "/",
+      "destination":      "accounting-service.organization-created",
+      "destination_type": "queue",
+      "routing_key":      "organization.organization.created",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.events",
+      "vhost":            "/",
+      "destination":      "notification-service.invoice-issued",
+      "destination_type": "queue",
+      "routing_key":      "invoice.invoice.issued",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.dlx",
+      "vhost":            "/",
+      "destination":      "user-service.user-registered.dead",
+      "destination_type": "queue",
+      "routing_key":      "user-service.user-registered.dead",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.dlx",
+      "vhost":            "/",
+      "destination":      "accounting-service.organization-created.dead",
+      "destination_type": "queue",
+      "routing_key":      "accounting-service.organization-created.dead",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.dlx",
+      "vhost":            "/",
+      "destination":      "notification-service.invoice-issued.dead",
+      "destination_type": "queue",
+      "routing_key":      "notification-service.invoice-issued.dead",
+      "arguments":        {}
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest", "vhost": "/",
+      "configure": ".*", "write": ".*", "read": ".*"
+    }
+  ]
+}

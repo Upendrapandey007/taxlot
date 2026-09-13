@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: search-service
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/taxlot_search}
+    username: ${DB_USERNAME:taxlot}
+    password: ${DB_PASSWORD:taxlot}
+  flyway:
+    enabled: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+server:
+  port: 8094
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
