@@ -35,6 +35,14 @@ class GatewayRoutesConfig(
                     }
                     .uri(properties.organizationServiceUrl)
             }
+            .route("accounting_service") { r ->
+                r.path("/api/v1/accounting/**")
+                    .filters { f -> 
+                        f.filter(authFilter)
+                        f.addRequestHeader("X-Gateway-Source", "api-gateway") 
+                    }
+                    .uri(properties.accountingServiceUrl)
+            }
             .route("fallback") { r ->
                 r.path("/api/v1/**")
                     .filters { f -> 

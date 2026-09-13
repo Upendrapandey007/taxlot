@@ -10,4 +10,5 @@ class GatewayProperties {
     lateinit var authServiceUrl: String
     lateinit var userServiceUrl: String
     lateinit var organizationServiceUrl: String
+    var accountingServiceUrl: String = "http://localhost:8084"
 }
