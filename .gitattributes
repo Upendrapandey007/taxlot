@@ -1,0 +1,42 @@
+# Auto-detect text files and perform LF normalization
+* text=auto
+
+# Kotlin/Java — enforce LF
+*.kt text eol=lf
+*.kts text eol=lf
+*.java text eol=lf
+*.gradle text eol=lf
+
+# Web
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+
+# Config files
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sql text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.env text eol=lf
+
+# Shell scripts must be LF
+*.sh text eol=lf
+
+# Windows batch files must be CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binaries — no line-ending conversion
+*.jar binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.apk binary
+*.aab binary

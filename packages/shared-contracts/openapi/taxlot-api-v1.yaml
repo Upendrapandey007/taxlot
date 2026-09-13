@@ -1,0 +1,389 @@
+openapi: 3.1.0
+info:
+  title: Taxlot API
+  description: |
+    Financial management platform API for Taxlot.
+    
+    ## Authentication
+    
+    All protected endpoints require a Bearer token in the Authorization header:
+    `
+    Authorization: Bearer <access_token>
+    `
+    
+    Access tokens expire after 15 minutes. Use the /auth/refresh endpoint to obtain a new one using your refresh token.
+    
+    ## Error Format
+    
+    All errors follow a consistent format:
+    `json
+    {
+      "code": "VALIDATION_ERROR",
+      "message": "Human-readable error message",
+      "requestId": "550e8400-e29b-41d4-a716-446655440000",
+      "details": [
+        { "field": "email", "message": "Must be a valid email address" }
+      ]
+    }
+    `
+    
+    ## Money
+    
+    All monetary amounts are returned as strings to avoid floating-point precision issues.
+    Example: "1234.5678" (4 decimal places)
+  version: '1.0.0'
+  contact:
+    name: Taxlot Engineering
+  license:
+    name: Proprietary
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local development
+  - url: https://api.taxlot.app/api/v1
+    description: Production
+
+security:
+  - BearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      tags: [Authentication]
+      summary: Register a new user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: Login with email and password
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/refresh:
+    post:
+      tags: [Authentication]
+      summary: Refresh access token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/logout:
+    post:
+      tags: [Authentication]
+      summary: Logout (revoke refresh token)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '204':
+          description: Logged out successfully
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /users/me:
+    get:
+      tags: [Users]
+      summary: Get current authenticated user
+      responses:
+        '200':
+          description: Current user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /organizations:
+    get:
+      tags: [Organizations]
+      summary: List organizations for the current user
+      responses:
+        '200':
+          description: List of organizations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationResponse'
+    post:
+      tags: [Organizations]
+      summary: Create a new organization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrganizationRequest'
+      responses:
+        '201':
+          description: Organization created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /organizations/{id}:
+    get:
+      tags: [Organizations]
+      summary: Get organization by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Organization details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [email, password, fullName]
+      properties:
+        email:
+          type: string
+          format: email
+          example: jane@example.com
+        password:
+          type: string
+          minLength: 8
+          maxLength: 100
+        fullName:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Jane Smith
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    RefreshRequest:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string
+
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: Short-lived JWT access token (15 minutes)
+        refreshToken:
+          type: string
+          description: Opaque rotating refresh token (30 days)
+        tokenType:
+          type: string
+          example: Bearer
+        expiresIn:
+          type: integer
+          description: Access token expiry in seconds
+          example: 900
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    OrganizationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        industry:
+          $ref: '#/components/schemas/IndustryType'
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+        currencyCode:
+          type: string
+          minLength: 3
+          maxLength: 3
+        taxNumber:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+
+    CreateOrganizationRequest:
+      type: object
+      required: [name, countryCode, currencyCode]
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 255
+        industry:
+          $ref: '#/components/schemas/IndustryType'
+        taxNumber:
+          type: string
+          nullable: true
+        countryCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: US
+        currencyCode:
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: USD
+
+    IndustryType:
+      type: string
+      enum: [RETAIL, AGENCY, FREELANCER, RESTAURANT, SERVICE, OTHER]
+
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: The request is invalid.
+        requestId:
+          type: string
+          format: uuid
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldError'
+
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+          example: email
+        message:
+          type: string
+          example: Must be a valid email address
+
+  responses:
+    ValidationError:
+      description: Request validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+
+    UnauthorizedError:
+      description: Authentication required or failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+
+    ForbiddenError:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+
+    ConflictError:
+      description: Resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'

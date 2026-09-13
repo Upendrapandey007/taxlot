@@ -1,0 +1,90 @@
+# =============================================================================
+# Taxlot Monorepo — .gitignore
+# =============================================================================
+
+# ---- Environment & Secrets --------------------------------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env.local
+secrets/
+*.pem
+*.key
+*.p12
+*.jks
+
+# ---- IDE & Editor -----------------------------------------------------------
+.idea/
+.idea/**
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ---- Kotlin / JVM / Gradle --------------------------------------------------
+apps/backend/.gradle/
+apps/backend/build/
+apps/backend/out/
+apps/backend/**/*.class
+apps/backend/**/*.jar
+apps/backend/**/*.war
+apps/backend/local.properties
+apps/backend/.kotlin/
+**/generated-src/
+apps/backend/src/main/generated/
+
+# ---- Node.js / Next.js / Web ------------------------------------------------
+apps/web/node_modules/
+apps/web/.next/
+apps/web/out/
+apps/web/.turbo/
+apps/web/dist/
+apps/web/.vercel/
+apps/web/coverage/
+
+# ---- Android ----------------------------------------------------------------
+apps/android/.gradle/
+apps/android/build/
+apps/android/local.properties
+apps/android/**/*.apk
+apps/android/**/*.aab
+apps/android/**/*.keystore
+apps/android/.cxx/
+apps/android/captures/
+
+# ---- Docker -----------------------------------------------------------------
+infrastructure/docker/.data/
+*.pid
+
+# ---- Logs -------------------------------------------------------------------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Testing ----------------------------------------------------------------
+apps/backend/src/test/resources/testcontainers.properties
+apps/web/playwright-report/
+apps/web/test-results/
+
+# ---- OS Artifacts -----------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+desktop.ini
+
+# ---- Gradle Wrapper (keep gradlew but not local cache) ----------------------
+!apps/backend/gradlew
+!apps/backend/gradlew.bat
+!apps/backend/gradle/wrapper/gradle-wrapper.jar
+!apps/backend/gradle/wrapper/gradle-wrapper.properties
