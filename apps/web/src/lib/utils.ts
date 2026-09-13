@@ -17,6 +17,6 @@ export function formatRelativeDate(date: string | Date): string {
   const diffInDays = Math.floor((new Date().getTime() - new Date(date).getTime()) / (1000 * 60 * 60 * 24))
   if (diffInDays === 0) return 'Today'
   if (diffInDays === 1) return 'Yesterday'
-  if (diffInDays < 7) return \`\${diffInDays} days ago\`
+  if (diffInDays < 7) return `${diffInDays} days ago`
   return formatDate(date)
 }

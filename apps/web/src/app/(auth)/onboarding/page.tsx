@@ -63,7 +63,7 @@ export default function OnboardingPage() {
         <CardTitle>Business Setup</CardTitle>
         <CardDescription>Step {step} of 3</CardDescription>
         <div className="w-full bg-muted h-2 rounded overflow-hidden mt-2">
-          <div className="bg-primary h-full transition-all" style={{ width: \`\${(step / 3) * 100}%\` }} />
+          <div className="bg-primary h-full transition-all" style={{ width: `${(step / 3) * 100}%` }} />
         </div>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -138,7 +138,7 @@ export default function OnboardingPage() {
                   return (
                     <div
                       key={ind.value}
-                      className={\`cursor-pointer border rounded-lg p-4 flex flex-col items-center gap-2 hover:border-primary transition-colors \${selectedIndustry === ind.value ? 'border-primary bg-primary/5' : ''}\`}
+                      className={`cursor-pointer border rounded-lg p-4 flex flex-col items-center gap-2 hover:border-primary transition-colors ${selectedIndustry === ind.value ? 'border-primary bg-primary/5' : ''}`}
                       onClick={() => {
                         setValue('industry', ind.value as any, { shouldValidate: true })
                       }}

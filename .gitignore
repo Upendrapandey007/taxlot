@@ -88,3 +88,5 @@ desktop.ini
 !apps/backend/gradlew.bat
 !apps/backend/gradle/wrapper/gradle-wrapper.jar
 !apps/backend/gradle/wrapper/gradle-wrapper.properties
+
+*.tsbuildinfo

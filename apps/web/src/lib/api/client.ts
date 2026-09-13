@@ -42,16 +42,16 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   }
 
   if (token) {
-    headers['Authorization'] = \`Bearer \${token}\`
+    (headers as Record<string, string>)['Authorization'] = `Bearer ${token}`
   }
 
-  let response = await fetch(\`\${API_URL}\${endpoint}\`, { ...options, headers })
+  let response = await fetch(`${API_URL}${endpoint}`, { ...options, headers })
 
   if (response.status === 401) {
     const refreshToken = localStorage.getItem('taxlot_refresh_token')
     if (refreshToken) {
       try {
-        const refreshRes = await fetch(\`\${API_URL}/api/v1/auth/refresh\`, {
+        const refreshRes = await fetch(`${API_URL}/api/v1/auth/refresh`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ refresh_token: refreshToken }),
@@ -60,9 +60,9 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
           const data = await refreshRes.json()
           localStorage.setItem('taxlot_access_token', data.access_token)
           localStorage.setItem('taxlot_refresh_token', data.refresh_token)
-          Cookies.set('auth', 'true')
-          headers['Authorization'] = \`Bearer \${data.access_token}\`
-          response = await fetch(\`\${API_URL}\${endpoint}\`, { ...options, headers })
+          Cookies.set('auth', 'true');
+          (headers as Record<string, string>)['Authorization'] = `Bearer ${data.access_token}`
+          response = await fetch(`${API_URL}${endpoint}`, { ...options, headers })
         } else {
           throw new Error('Refresh failed')
         }

@@ -14,7 +14,7 @@ export default function DashboardPage() {
     <>
       <div>
         <h2 className="text-2xl font-bold tracking-tight">{greeting}, {user?.full_name?.split(' ')[0]}</h2>
-        <p className="text-muted-foreground mt-1">Here's what's happening with your business.</p>
+        <p className="text-muted-foreground mt-1">Here&apos;s what&apos;s happening with your business.</p>
       </div>
 
       <Card>
@@ -75,8 +75,8 @@ export default function DashboardPage() {
             <Link key={i} href={action.href}>
               <Card className="hover:border-primary/50 transition-colors cursor-pointer h-full">
                 <CardContent className="p-6 flex flex-col items-center justify-center text-center gap-3">
-                  <div className={\`p-3 rounded-full \${action.bg}\`}>
-                    <Icon className={\`h-6 w-6 \${action.color}\`} />
+                  <div className={`p-3 rounded-full ${action.bg}`}>
+                    <Icon className={`h-6 w-6 ${action.color}`} />
                   </div>
                   <span className="font-medium text-sm">{action.label}</span>
                 </CardContent>
@@ -118,7 +118,7 @@ export default function DashboardPage() {
             <Activity className="h-12 w-12 text-muted-foreground/30 mb-4" />
             <p className="text-lg font-medium">Your financial activity will appear here</p>
             <p className="text-sm text-muted-foreground max-w-sm mt-2 mb-6">
-              Once you start adding expenses and creating invoices, you'll see a timeline of your business activity.
+              Once you start adding expenses and creating invoices, you&apos;ll see a timeline of your business activity.
             </p>
             <Button asChild>
               <Link href="/expenses">Record your first expense</Link>

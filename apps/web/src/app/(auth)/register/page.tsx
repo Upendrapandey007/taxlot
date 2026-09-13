@@ -72,9 +72,9 @@ export default function RegisterPage() {
             {strength.label && (
               <div className="flex items-center space-x-2 mt-1">
                 <div className="h-1 flex-1 bg-muted rounded overflow-hidden">
-                  <div className={\`h-full \${strength.color}\`} style={{ width: strength.label === 'Weak' ? '33%' : strength.label === 'Fair' ? '66%' : '100%' }}></div>
+                  <div className={`h-full ${strength.color}`} style={{ width: strength.label === 'Weak' ? '33%' : strength.label === 'Fair' ? '66%' : '100%' }}></div>
                 </div>
-                <span className={\`text-xs \${strength.color.replace('bg-', 'text-')}\`}>{strength.label}</span>
+                <span className={`text-xs ${strength.color.replace('bg-', 'text-')}`}>{strength.label}</span>
               </div>
             )}
             {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}

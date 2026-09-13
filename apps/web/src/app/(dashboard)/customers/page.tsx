@@ -20,7 +20,7 @@ export default function CustomersPage() {
           </div>
           <h3 className="text-xl font-semibold mb-2">No customers added</h3>
           <p className="text-muted-foreground max-w-sm mb-6">
-            Keep track of your clients' details, billing history, and outstanding balances in one place.
+            Keep track of your clients&apos; details, billing history, and outstanding balances in one place.
           </p>
           <Button>Add your first customer</Button>
         </CardContent>
