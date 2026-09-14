@@ -34,18 +34,7 @@ jobs:
         with: { java-version: "${{ env.JAVA_VERSION }}", distribution: temurin, cache: gradle }
       - run: chmod +x gradlew
       - name: Build shared platform
-        run: |
-          if ! ./gradlew :shared:platform:assemble --no-daemon --stacktrace 2>&1 | tee build.log; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git checkout -B ci-debug-log
-            git add build.log
-            git commit -m "ci debug log [skip ci]" || true
-            git push -f origin ci-debug-log || true
-            exit 1
-          fi
-
-
+        run: ./gradlew :shared:platform:assemble --no-daemon --stacktrace
 
   # ===========================================================================
   # Active Services — Full test suites
@@ -99,34 +88,12 @@ jobs:
       - run: chmod +x gradlew
 
       - name: Unit Tests
-        run: |
-          if ! ./gradlew :services:${{ matrix.service }}:test --no-daemon --stacktrace 2>&1 | tee unit_test.log; then
-            if [ "${{ matrix.service }}" = "api-gateway" ]; then
-              git config user.name "github-actions[bot]"
-              git config user.email "github-actions[bot]@users.noreply.github.com"
-              git checkout -B ci-debug-unit
-              git add unit_test.log
-              git commit -m "unit test debug log [skip ci]" || true
-              git push -f origin ci-debug-unit || true
-            fi
-            exit 1
-          fi
+        run: ./gradlew :services:${{ matrix.service }}:test --no-daemon --stacktrace
         env:
           JWT_SECRET: ci-test-secret-at-least-256-bits-long-for-hmac
 
       - name: Integration Tests
-        run: |
-          if ! ./gradlew :services:${{ matrix.service }}:integrationTest --no-daemon --stacktrace 2>&1 | tee integration_test.log; then
-            if [ "${{ matrix.service }}" = "api-gateway" ] || [ "${{ matrix.service }}" = "auth-service" ]; then
-              git config user.name "github-actions[bot]"
-              git config user.email "github-actions[bot]@users.noreply.github.com"
-              git checkout -B ci-debug-it
-              git add integration_test.log
-              git commit -m "it debug log [skip ci]" || true
-              git push -f origin ci-debug-it || true
-            fi
-            exit 1
-          fi
+        run: ./gradlew :services:${{ matrix.service }}:integrationTest --no-daemon --stacktrace
         env:
           DB_URL:              jdbc:postgresql://localhost:5432/taxlot_test
           DB_USERNAME:         taxlot
@@ -135,21 +102,12 @@ jobs:
           RABBITMQ_HOST:       localhost
           JWT_SECRET:          ci-test-secret-at-least-256-bits-long-for-hmac
 
-
       - name: Build JAR
-        run: |
-          if ! ./gradlew :services:${{ matrix.service }}:bootJar --no-daemon --stacktrace 2>&1 | tee bootjar.log; then
-            ERR_MSG=$(tail -n 20 bootjar.log | tr '\r\n' ' ')
-            echo "::error title=BootJar Error for ${{ matrix.service }}::$ERR_MSG"
-            echo "### BootJar Error for ${{ matrix.service }}" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -n 60 bootjar.log >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            exit 1
-          fi
+        run: ./gradlew :services:${{ matrix.service }}:bootJar --no-daemon --stacktrace
+        env:
+          JWT_SECRET: ci-test-secret-at-least-256-bits-long-for-hmac
 
       - name: Upload test reports
-
         if: failure()
         uses: actions/upload-artifact@v4
         with:
@@ -171,21 +129,11 @@ jobs:
       - run: chmod +x gradlew
       - name: Compile all stub services
         run: |
-          compile_stubs() {
-            for svc in reporting-service document-service notification-service ai-service search-service integration-service; do
-              echo "Compiling $svc..."
-              ./gradlew :services:${svc}:compileKotlin --no-daemon --stacktrace || return 1
-            done
-          }
-          if ! compile_stubs 2>&1 | tee stub_build.log; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git checkout -B ci-debug-stub
-            git add stub_build.log
-            git commit -m "stub debug log [skip ci]" || true
-            git push -f origin ci-debug-stub || true
-            exit 1
-          fi
+          for svc in reporting-service document-service notification-service ai-service search-service integration-service; do
+            echo "Compiling $svc..."
+            ./gradlew :services:${svc}:compileKotlin --no-daemon --stacktrace
+          done
+
 
 
   # ===========================================================================
@@ -239,18 +187,13 @@ jobs:
         service: [api-gateway, auth-service, user-service, organization-service, accounting-service, customer-service, invoice-service, payment-service, expense-service, tax-service]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with: { java-version: "${{ env.JAVA_VERSION }}", distribution: temurin, cache: gradle }
-      - run: chmod +x gradlew && ./gradlew :services:${{ matrix.service }}:bootJar --no-daemon --stacktrace
-        env:
-          JWT_SECRET: ci-test-secret-at-least-256-bits-long-for-hmac
-
       - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: docker/metadata-action@v5
         id: meta
         with:
