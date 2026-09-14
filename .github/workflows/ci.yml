@@ -1,5 +1,5 @@
-# =============================================================================
-# Taxlot — CI/CD Pipeline (Microservices Matrix)
+ï»¿# =============================================================================
+# Taxlot â€” CI/CD Pipeline (Microservices Matrix)
 # =============================================================================
 
 name: CI
@@ -34,7 +34,7 @@ jobs:
       - run: ./gradlew :shared:platform:build --no-daemon
 
   # ===========================================================================
-  # Active Services — Full test suites
+  # Active Services â€” Full test suites
   # ===========================================================================
   active-services:
     name: ${{ matrix.service }}
@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        service: [api-gateway, auth-service, user-service, organization-service]
+        service: [api-gateway, auth-service, user-service, organization-service, accounting-service, customer-service, invoice-service, payment-service, expense-service, tax-service]
 
     services:
       postgres:
@@ -111,7 +111,7 @@ jobs:
           retention-days: 7
 
   # ===========================================================================
-  # Stub Services — Compile-only check
+  # Stub Services â€” Compile-only check
   # ===========================================================================
   stub-services:
     name: Stubs compile
@@ -178,7 +178,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     strategy:
       matrix:
-        service: [api-gateway, auth-service, user-service, organization-service]
+        service: [api-gateway, auth-service, user-service, organization-service, accounting-service, customer-service, invoice-service, payment-service, expense-service, tax-service]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -205,3 +205,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to:   type=gha,mode=max
+
