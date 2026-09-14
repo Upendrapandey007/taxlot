@@ -2,10 +2,12 @@ package com.taxlot.payment
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootApplication
-class PaymentServiceApplication
+@EnableScheduling
+class PaymentApplication
 
 fun main(args: Array<String>) {
-    runApplication<PaymentServiceApplication>(*args)
+    runApplication<PaymentApplication>(*args)
 }

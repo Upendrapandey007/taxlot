@@ -1,21 +1,16 @@
+server:
+  port: 8085
 spring:
   application:
     name: customer-service
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/taxlot_customer}
-    username: ${DB_USERNAME:taxlot}
-    password: ${DB_PASSWORD:taxlot}
+    url: jdbc:postgresql://localhost:5432/taxlot_customer
+    username: postgres
+    password: password
   flyway:
     enabled: true
-  rabbitmq:
-    host: ${RABBITMQ_HOST:localhost}
-    port: ${RABBITMQ_PORT:5672}
-    username: ${RABBITMQ_USERNAME:guest}
-    password: ${RABBITMQ_PASSWORD:guest}
-server:
-  port: 8085
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info
+    baseline-on-migrate: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    serialization:
+      write-dates-as-timestamps: false

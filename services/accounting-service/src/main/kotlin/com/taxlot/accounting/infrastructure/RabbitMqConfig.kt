@@ -26,7 +26,37 @@ class RabbitMqConfig {
 
     @Bean
     fun organizationCreatedBinding(organizationCreatedQueue: Queue, exchange: TopicExchange): Binding {
-        return BindingBuilder.bind(organizationCreatedQueue).to(exchange).with("organization.created")
+        return BindingBuilder.bind(organizationCreatedQueue).to(exchange).with("organization.organization.created")
+    }
+
+    @Bean
+    fun invoiceIssuedQueue(): Queue {
+        return Queue("accounting-service.invoice-issued", true)
+    }
+
+    @Bean
+    fun invoiceIssuedBinding(invoiceIssuedQueue: Queue, exchange: TopicExchange): Binding {
+        return BindingBuilder.bind(invoiceIssuedQueue).to(exchange).with("invoice.invoice.issued")
+    }
+
+    @Bean
+    fun paymentReceivedQueue(): Queue {
+        return Queue("accounting-service.payment-received", true)
+    }
+
+    @Bean
+    fun paymentReceivedBinding(paymentReceivedQueue: Queue, exchange: TopicExchange): Binding {
+        return BindingBuilder.bind(paymentReceivedQueue).to(exchange).with("payment.payment.received")
+    }
+
+    @Bean
+    fun expenseRecordedQueue(): Queue {
+        return Queue("accounting-service.expense-recorded", true)
+    }
+
+    @Bean
+    fun expenseRecordedBinding(expenseRecordedQueue: Queue, exchange: TopicExchange): Binding {
+        return BindingBuilder.bind(expenseRecordedQueue).to(exchange).with("expense.expense.recorded")
     }
 
     @Bean

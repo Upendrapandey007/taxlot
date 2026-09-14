@@ -34,3 +34,7 @@ taxlot:
     user-service-url: ${USER_SERVICE_URL:http://localhost:8082}
     organization-service-url: ${ORG_SERVICE_URL:http://localhost:8083}
     accounting-service-url: ${ACCOUNTING_SERVICE_URL:http://localhost:8084}
+    customer-service-url: ${CUSTOMER_SERVICE_URL:http://localhost:8085}
+    invoice-service-url: ${INVOICE_SERVICE_URL:http://localhost:8086}
+    payment-service-url: ${PAYMENT_SERVICE_URL:http://localhost:8087}
+    expense-service-url: ${EXPENSE_SERVICE_URL:http://localhost:8088}

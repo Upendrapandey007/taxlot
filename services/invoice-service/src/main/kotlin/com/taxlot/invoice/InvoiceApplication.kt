@@ -2,10 +2,12 @@ package com.taxlot.invoice
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootApplication
-class InvoiceServiceApplication
+@EnableScheduling
+class InvoiceApplication
 
 fun main(args: Array<String>) {
-    runApplication<InvoiceServiceApplication>(*args)
+    runApplication<InvoiceApplication>(*args)
 }

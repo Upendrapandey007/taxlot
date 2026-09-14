@@ -72,6 +72,78 @@
       "durable": true,
       "auto_delete": false,
       "arguments": {}
+    },
+    {
+      "name":  "accounting-service.invoice-issued",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "taxlot.dlx",
+        "x-dead-letter-routing-key": "accounting-service.invoice-issued.dead",
+        "x-message-ttl": 86400000
+      }
+    },
+    {
+      "name":  "accounting-service.invoice-issued.dead",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name":  "accounting-service.payment-received",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "taxlot.dlx",
+        "x-dead-letter-routing-key": "accounting-service.payment-received.dead",
+        "x-message-ttl": 86400000
+      }
+    },
+    {
+      "name":  "accounting-service.payment-received.dead",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name":  "accounting-service.expense-recorded",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "taxlot.dlx",
+        "x-dead-letter-routing-key": "accounting-service.expense-recorded.dead",
+        "x-message-ttl": 86400000
+      }
+    },
+    {
+      "name":  "accounting-service.expense-recorded.dead",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name":  "invoice-service.payment-received",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "taxlot.dlx",
+        "x-dead-letter-routing-key": "invoice-service.payment-received.dead",
+        "x-message-ttl": 86400000
+      }
+    },
+    {
+      "name":  "invoice-service.payment-received.dead",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
     }
   ],
   "bindings": [
@@ -100,6 +172,38 @@
       "arguments":        {}
     },
     {
+      "source":           "taxlot.events",
+      "vhost":            "/",
+      "destination":      "accounting-service.invoice-issued",
+      "destination_type": "queue",
+      "routing_key":      "invoice.invoice.issued",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.events",
+      "vhost":            "/",
+      "destination":      "accounting-service.payment-received",
+      "destination_type": "queue",
+      "routing_key":      "payment.payment.received",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.events",
+      "vhost":            "/",
+      "destination":      "accounting-service.expense-recorded",
+      "destination_type": "queue",
+      "routing_key":      "expense.expense.recorded",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.events",
+      "vhost":            "/",
+      "destination":      "invoice-service.payment-received",
+      "destination_type": "queue",
+      "routing_key":      "payment.payment.received",
+      "arguments":        {}
+    },
+    {
       "source":           "taxlot.dlx",
       "vhost":            "/",
       "destination":      "user-service.user-registered.dead",
@@ -121,6 +225,38 @@
       "destination":      "notification-service.invoice-issued.dead",
       "destination_type": "queue",
       "routing_key":      "notification-service.invoice-issued.dead",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.dlx",
+      "vhost":            "/",
+      "destination":      "accounting-service.invoice-issued.dead",
+      "destination_type": "queue",
+      "routing_key":      "accounting-service.invoice-issued.dead",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.dlx",
+      "vhost":            "/",
+      "destination":      "accounting-service.payment-received.dead",
+      "destination_type": "queue",
+      "routing_key":      "accounting-service.payment-received.dead",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.dlx",
+      "vhost":            "/",
+      "destination":      "accounting-service.expense-recorded.dead",
+      "destination_type": "queue",
+      "routing_key":      "accounting-service.expense-recorded.dead",
+      "arguments":        {}
+    },
+    {
+      "source":           "taxlot.dlx",
+      "vhost":            "/",
+      "destination":      "invoice-service.payment-received.dead",
+      "destination_type": "queue",
+      "routing_key":      "invoice-service.payment-received.dead",
       "arguments":        {}
     }
   ],

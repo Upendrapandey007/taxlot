@@ -43,6 +43,38 @@ class GatewayRoutesConfig(
                     }
                     .uri(properties.accountingServiceUrl)
             }
+            .route("customer_service") { r ->
+                r.path("/api/v1/customers/**")
+                    .filters { f -> 
+                        f.filter(authFilter)
+                        f.addRequestHeader("X-Gateway-Source", "api-gateway") 
+                    }
+                    .uri(properties.customerServiceUrl)
+            }
+            .route("invoice_service") { r ->
+                r.path("/api/v1/invoices/**")
+                    .filters { f -> 
+                        f.filter(authFilter)
+                        f.addRequestHeader("X-Gateway-Source", "api-gateway") 
+                    }
+                    .uri(properties.invoiceServiceUrl)
+            }
+            .route("payment_service") { r ->
+                r.path("/api/v1/payments/**")
+                    .filters { f -> 
+                        f.filter(authFilter)
+                        f.addRequestHeader("X-Gateway-Source", "api-gateway") 
+                    }
+                    .uri(properties.paymentServiceUrl)
+            }
+            .route("expense_service") { r ->
+                r.path("/api/v1/expenses/**")
+                    .filters { f -> 
+                        f.filter(authFilter)
+                        f.addRequestHeader("X-Gateway-Source", "api-gateway") 
+                    }
+                    .uri(properties.expenseServiceUrl)
+            }
             .route("fallback") { r ->
                 r.path("/api/v1/**")
                     .filters { f -> 
