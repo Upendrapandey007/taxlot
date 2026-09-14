@@ -99,7 +99,18 @@ jobs:
       - run: chmod +x gradlew
 
       - name: Unit Tests
-        run: ./gradlew :services:${{ matrix.service }}:test --no-daemon --stacktrace
+        run: |
+          if ! ./gradlew :services:${{ matrix.service }}:test --no-daemon --stacktrace 2>&1 | tee unit_test.log; then
+            if [ "${{ matrix.service }}" = "api-gateway" ]; then
+              git config user.name "github-actions[bot]"
+              git config user.email "github-actions[bot]@users.noreply.github.com"
+              git checkout -B ci-debug-unit
+              git add unit_test.log
+              git commit -m "unit test debug log [skip ci]" || true
+              git push -f origin ci-debug-unit || true
+            fi
+            exit 1
+          fi
         env:
           JWT_SECRET: ci-test-secret-at-least-256-bits-long-for-hmac
 
@@ -138,10 +149,22 @@ jobs:
       - run: chmod +x gradlew
       - name: Compile all stub services
         run: |
-          for svc in reporting-service document-service notification-service ai-service search-service integration-service; do
-            echo "Compiling $svc..."
-            ./gradlew :services:${svc}:compileKotlin --no-daemon
-          done
+          compile_stubs() {
+            for svc in reporting-service document-service notification-service ai-service search-service integration-service; do
+              echo "Compiling $svc..."
+              ./gradlew :services:${svc}:compileKotlin --no-daemon --stacktrace || return 1
+            done
+          }
+          if ! compile_stubs 2>&1 | tee stub_build.log; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git checkout -B ci-debug-stub
+            git add stub_build.log
+            git commit -m "stub debug log [skip ci]" || true
+            git push -f origin ci-debug-stub || true
+            exit 1
+          fi
+
 
   # ===========================================================================
   # Web Application
