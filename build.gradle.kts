@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+﻿import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.jvm)           apply false
@@ -57,7 +57,6 @@ configure(subprojects.filter { it.path.startsWith(":services") }) {
 configure(subprojects.filter { it.path.startsWith(":shared") }) {
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
-    apply(plugin = "io.spring.dependency-management")
 
     configure<JavaPluginExtension> {
         toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
@@ -69,3 +68,4 @@ configure(subprojects.filter { it.path.startsWith(":shared") }) {
 
     tasks.withType<Test> { useJUnitPlatform() }
 }
+
