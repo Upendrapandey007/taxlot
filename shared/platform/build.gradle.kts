@@ -1,4 +1,4 @@
-dependencies {
+﻿dependencies {
     api("org.springframework.boot:spring-boot-starter-web:3.3.3")
     api("org.springframework.boot:spring-boot-starter-validation:3.3.3")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2")
@@ -6,5 +6,6 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 }
 
-tasks.bootJar { enabled = false }
+// tasks.bootJar not applicable
 tasks.jar { enabled = true }
+
