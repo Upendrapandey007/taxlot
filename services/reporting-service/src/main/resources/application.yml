@@ -1,21 +1,34 @@
+﻿server:
+  port: 8090
+
 spring:
   application:
     name: reporting-service
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/taxlot_reporting}
-    username: ${DB_USERNAME:taxlot}
-    password: ${DB_PASSWORD:taxlot}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
   flyway:
     enabled: true
+    baseline-on-migrate: true
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}
-    username: ${RABBITMQ_USERNAME:guest}
+    username: ${RABBITMQ_USER:guest}
     password: ${RABBITMQ_PASSWORD:guest}
-server:
-  port: 8090
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    serialization:
+      write-dates-as-timestamps: false
+
+taxlot:
+  services:
+    accounting-url: ${ACCOUNTING_SERVICE_URL:http://localhost:8084}
+    invoice-url: ${INVOICE_SERVICE_URL:http://localhost:8086}
+    expense-url: ${EXPENSE_SERVICE_URL:http://localhost:8088}
+
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,metrics

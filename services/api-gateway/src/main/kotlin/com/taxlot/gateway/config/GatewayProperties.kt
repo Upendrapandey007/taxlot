@@ -16,4 +16,5 @@ class GatewayProperties {
     var paymentServiceUrl: String = "http://localhost:8087"
     var expenseServiceUrl: String = "http://localhost:8088"
     var taxServiceUrl: String = "http://localhost:8089"
+    var reportingServiceUrl: String = "http://localhost:8090"
 }

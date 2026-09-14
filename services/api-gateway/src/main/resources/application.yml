@@ -39,4 +39,5 @@ taxlot:
     payment-service-url: ${PAYMENT_SERVICE_URL:http://localhost:8087}
     expense-service-url: ${EXPENSE_SERVICE_URL:http://localhost:8088}
     tax-service-url: ${TAX_SERVICE_URL:http://localhost:8089}
+    reporting-service-url: ${REPORTING_SERVICE_URL:http://localhost:8090}
 
