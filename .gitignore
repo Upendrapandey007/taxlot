@@ -95,3 +95,5 @@ desktop.ini
 apps/mobile/node_modules/
 apps/mobile/.expo/
 .expo/
+
+apps/mobile/dist/
