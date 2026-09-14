@@ -38,6 +38,8 @@ jobs:
             cat build.log
             exit 1
           fi
+          # Also dump gradle output
+          cat build.log
 
   # ===========================================================================
   # Active Services — Full test suites
@@ -211,6 +213,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to:   type=gha,mode=max
+
 
 
 
