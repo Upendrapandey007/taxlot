@@ -34,7 +34,14 @@ jobs:
         with: { java-version: "${{ env.JAVA_VERSION }}", distribution: temurin, cache: gradle }
       - run: chmod +x gradlew
       - name: Build shared platform
-        run: ./gradlew :shared:platform:assemble --no-daemon --stacktrace
+        run: |
+          set -o pipefail
+          ./gradlew :shared:platform:assemble --no-daemon --stacktrace 2>&1 | tee build.log || {
+            ERR=$(tail -n 10 build.log | tr '\r\n' ' ')
+            echo "::error title=Shared Platform Error::$ERR"
+            exit 1
+          }
+
 
   # ===========================================================================
   # Active Services — Full test suites
