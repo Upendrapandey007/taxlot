@@ -37,10 +37,14 @@ jobs:
         run: |
           set -o pipefail
           ./gradlew :shared:platform:assemble --no-daemon --stacktrace 2>&1 | tee build.log || {
-            ERR=$(tail -n 10 build.log | tr '\r\n' ' ')
+            ERR=$(grep -A 10 "What went wrong:" build.log | tr '\r\n' ' ')
+            if [ -z "$ERR" ]; then
+              ERR=$(grep -A 10 "FAILURE:" build.log | tr '\r\n' ' ')
+            fi
             echo "::error title=Shared Platform Error::$ERR"
             exit 1
           }
+
 
 
   # ===========================================================================
