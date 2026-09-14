@@ -90,3 +90,8 @@ desktop.ini
 !apps/backend/gradle/wrapper/gradle-wrapper.properties
 
 *.tsbuildinfo
+
+# Mobile
+apps/mobile/node_modules/
+apps/mobile/.expo/
+.expo/
