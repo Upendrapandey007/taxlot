@@ -137,9 +137,19 @@ jobs:
 
 
       - name: Build JAR
-        run: ./gradlew :services:${{ matrix.service }}:bootJar --no-daemon
+        run: |
+          if ! ./gradlew :services:${{ matrix.service }}:bootJar --no-daemon --stacktrace 2>&1 | tee bootjar.log; then
+            ERR_MSG=$(tail -n 20 bootjar.log | tr '\r\n' ' ')
+            echo "::error title=BootJar Error for ${{ matrix.service }}::$ERR_MSG"
+            echo "### BootJar Error for ${{ matrix.service }}" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -n 60 bootjar.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
 
       - name: Upload test reports
+
         if: failure()
         uses: actions/upload-artifact@v4
         with:
