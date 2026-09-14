@@ -1,4 +1,4 @@
-﻿package com.taxlot.reporting.domain
+package com.taxlot.reporting.domain
 
 import java.math.BigDecimal
 import java.time.LocalDate

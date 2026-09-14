@@ -1,4 +1,4 @@
-﻿package com.taxlot.tax.scraper
+package com.taxlot.tax.scraper
 
 import com.taxlot.tax.domain.*
 import com.taxlot.tax.repository.RegulatoryScraperRepository

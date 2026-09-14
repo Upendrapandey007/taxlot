@@ -1,4 +1,4 @@
-﻿package com.taxlot.tax
+package com.taxlot.tax
 
 import com.taxlot.tax.domain.TaxRule
 import com.taxlot.tax.engine.*

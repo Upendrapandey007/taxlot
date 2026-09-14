@@ -1,4 +1,4 @@
-﻿package com.taxlot.reporting.repository
+package com.taxlot.reporting.repository
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.taxlot.reporting.domain.*

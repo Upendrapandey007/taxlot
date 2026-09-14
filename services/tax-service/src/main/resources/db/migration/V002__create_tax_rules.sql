@@ -1,4 +1,4 @@
-﻿CREATE TABLE IF NOT EXISTS tax_rules (
+CREATE TABLE IF NOT EXISTS tax_rules (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     jurisdiction_id UUID NOT NULL REFERENCES tax_jurisdictions(id) ON DELETE CASCADE,
     category_code VARCHAR(50) NOT NULL,

@@ -1,4 +1,4 @@
-﻿dependencies {
+dependencies {
     implementation(project(":shared:platform"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")

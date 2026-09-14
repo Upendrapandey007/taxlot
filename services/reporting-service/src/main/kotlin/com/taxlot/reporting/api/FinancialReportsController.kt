@@ -1,4 +1,4 @@
-﻿package com.taxlot.reporting.api
+package com.taxlot.reporting.api
 
 import com.taxlot.reporting.domain.*
 import com.taxlot.reporting.service.FinancialReportService

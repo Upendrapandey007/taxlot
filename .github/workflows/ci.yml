@@ -1,4 +1,4 @@
-﻿# =============================================================================
+# =============================================================================
 # Taxlot — CI/CD Pipeline (Microservices Matrix)
 # =============================================================================
 
@@ -31,15 +31,9 @@ jobs:
       - uses: actions/setup-java@v4
         with: { java-version: "${{ env.JAVA_VERSION }}", distribution: temurin, cache: gradle }
       - run: chmod +x gradlew
-      - name: Build with detailed logging
-        run: |
-          ./gradlew :shared:platform:assemble --no-daemon --stacktrace 2>&1 | tee build.log || true
-          cat build.log > shared_build_error.txt
-      - name: Upload build log artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: shared-platform-build-log
-          path: shared_build_error.txt
+      - name: Build shared platform
+        run: ./gradlew :shared:platform:assemble --no-daemon --stacktrace
+
 
   # ===========================================================================
   # Active Services — Full test suites

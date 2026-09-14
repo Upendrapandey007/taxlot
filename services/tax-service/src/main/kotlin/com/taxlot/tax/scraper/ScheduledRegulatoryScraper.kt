@@ -1,4 +1,4 @@
-﻿package com.taxlot.tax.scraper
+package com.taxlot.tax.scraper
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty

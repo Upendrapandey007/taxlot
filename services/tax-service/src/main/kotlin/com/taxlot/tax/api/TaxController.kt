@@ -1,4 +1,4 @@
-﻿package com.taxlot.tax.api
+package com.taxlot.tax.api
 
 import com.taxlot.tax.domain.RegulatoryScrape
 import com.taxlot.tax.domain.TaxPeriod

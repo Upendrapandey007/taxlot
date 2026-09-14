@@ -1,4 +1,4 @@
-﻿package com.taxlot.tax.engine
+package com.taxlot.tax.engine
 
 import com.taxlot.tax.domain.TaxRule
 import java.math.BigDecimal

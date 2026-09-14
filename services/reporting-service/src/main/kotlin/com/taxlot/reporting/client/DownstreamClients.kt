@@ -1,4 +1,4 @@
-﻿package com.taxlot.reporting.client
+package com.taxlot.reporting.client
 
 import com.taxlot.reporting.domain.AccountBalanceItem
 import com.taxlot.reporting.domain.AccountCategory

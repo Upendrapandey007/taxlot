@@ -1,4 +1,4 @@
-﻿package com.taxlot.tax.outbox
+package com.taxlot.tax.outbox
 
 import com.taxlot.tax.repository.TaxOutboxRepository
 import org.slf4j.LoggerFactory

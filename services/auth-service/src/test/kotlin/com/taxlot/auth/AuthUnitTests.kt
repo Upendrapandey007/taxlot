@@ -1,4 +1,4 @@
-﻿package com.taxlot.auth
+package com.taxlot.auth
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertTrue

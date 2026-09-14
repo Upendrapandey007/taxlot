@@ -1,4 +1,4 @@
-﻿package com.taxlot.tax.service
+package com.taxlot.tax.service
 
 import com.taxlot.platform.error.NotFoundException
 import com.taxlot.tax.domain.TaxPeriod

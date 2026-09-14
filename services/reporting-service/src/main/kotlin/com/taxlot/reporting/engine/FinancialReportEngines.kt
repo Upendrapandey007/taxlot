@@ -1,4 +1,4 @@
-﻿package com.taxlot.reporting.engine
+package com.taxlot.reporting.engine
 
 import com.taxlot.reporting.domain.*
 import java.math.BigDecimal

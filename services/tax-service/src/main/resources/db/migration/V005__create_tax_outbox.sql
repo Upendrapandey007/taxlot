@@ -1,4 +1,4 @@
-﻿CREATE TABLE IF NOT EXISTS tax_outbox (
+CREATE TABLE IF NOT EXISTS tax_outbox (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     event_id UUID NOT NULL,
     event_type VARCHAR(100) NOT NULL,

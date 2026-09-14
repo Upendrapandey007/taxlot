@@ -1,4 +1,4 @@
-﻿import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.jvm)           apply false
@@ -28,7 +28,7 @@ configure(subprojects.filter { it.path.startsWith(":services") }) {
         compilerOptions { freeCompilerArgs.addAll("-Xjsr305=strict") }
     }
 
-        tasks.withType<Test> {
+    tasks.withType<Test> {
         useJUnitPlatform()
         testLogging { events("passed", "skipped", "failed") }
         filter {
@@ -58,6 +58,7 @@ configure(subprojects.filter { it.path.startsWith(":services") }) {
 
 // -- Common config for shared library -----------------------------------------
 configure(subprojects.filter { it.path.startsWith(":shared") }) {
+    apply(plugin = "java-library")
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.spring")
 
@@ -71,5 +72,6 @@ configure(subprojects.filter { it.path.startsWith(":shared") }) {
 
     tasks.withType<Test> { useJUnitPlatform() }
 }
+
 
 

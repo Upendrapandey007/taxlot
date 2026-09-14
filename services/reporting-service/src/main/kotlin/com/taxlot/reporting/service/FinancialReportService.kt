@@ -1,4 +1,4 @@
-﻿package com.taxlot.reporting.service
+package com.taxlot.reporting.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.taxlot.reporting.client.AccountingDataClient

@@ -1,4 +1,4 @@
-﻿CREATE TABLE IF NOT EXISTS tax_periods (
+CREATE TABLE IF NOT EXISTS tax_periods (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL,
     period_name VARCHAR(50) NOT NULL, -- e.g. "2081/04", "2024-Q1", "2024-07"

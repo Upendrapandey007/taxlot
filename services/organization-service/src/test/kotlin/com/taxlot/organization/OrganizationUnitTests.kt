@@ -1,9 +1,9 @@
-package com.taxlot.customer
+package com.taxlot.organization
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertTrue
 
-class CustomerUnitTests {
+class OrganizationUnitTests {
     @Test
     fun contextTest() {
         assertTrue(true)
