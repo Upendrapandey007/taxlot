@@ -75,6 +75,14 @@ class GatewayRoutesConfig(
                     }
                     .uri(properties.expenseServiceUrl)
             }
+            .route("tax_service") { r ->
+                r.path("/api/v1/tax/**")
+                    .filters { f -> 
+                        f.filter(authFilter)
+                        f.addRequestHeader("X-Gateway-Source", "api-gateway") 
+                    }
+                    .uri(properties.taxServiceUrl)
+            }
             .route("fallback") { r ->
                 r.path("/api/v1/**")
                     .filters { f -> 

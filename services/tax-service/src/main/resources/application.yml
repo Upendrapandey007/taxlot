@@ -1,21 +1,38 @@
+server:
+  port: 8089
+
 spring:
   application:
     name: tax-service
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/taxlot_tax}
-    username: ${DB_USERNAME:taxlot}
-    password: ${DB_PASSWORD:taxlot}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
   flyway:
     enabled: true
+    baseline-on-migrate: true
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     port: ${RABBITMQ_PORT:5672}
-    username: ${RABBITMQ_USERNAME:guest}
+    username: ${RABBITMQ_USER:guest}
     password: ${RABBITMQ_PASSWORD:guest}
-server:
-  port: 8089
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    serialization:
+      write-dates-as-timestamps: false
+
+taxlot:
+  events:
+    exchange: taxlot.events
+  outbox:
+    poll-interval-ms: 5000
+  scraper:
+    cron: "0 0 2 * * *" # Daily at 2 AM
+    enabled: true
+
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,metrics
+
