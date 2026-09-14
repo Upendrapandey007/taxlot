@@ -93,7 +93,7 @@ jobs:
       - run: chmod +x gradlew
 
       - name: Unit Tests
-        run: ./gradlew :services:${{ matrix.service }}:test --no-daemon
+        run: ./gradlew :services:${{ matrix.service }}:test --no-daemon --stacktrace
         env:
           JWT_SECRET: ci-test-secret-at-least-256-bits-long-for-hmac
 
@@ -132,9 +132,7 @@ jobs:
       - run: chmod +x gradlew
       - name: Compile all stub services
         run: |
-          for svc in accounting-service customer-service invoice-service payment-service \
-                     expense-service tax-service reporting-service document-service \
-                     notification-service ai-service search-service integration-service; do
+          for svc in reporting-service document-service notification-service ai-service search-service integration-service; do
             echo "Compiling $svc..."
             ./gradlew :services:${svc}:compileKotlin --no-daemon
           done
@@ -213,6 +211,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to:   type=gha,mode=max
+
+
 
 
 

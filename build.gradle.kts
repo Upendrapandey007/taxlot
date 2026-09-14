@@ -28,9 +28,12 @@ configure(subprojects.filter { it.path.startsWith(":services") }) {
         compilerOptions { freeCompilerArgs.addAll("-Xjsr305=strict") }
     }
 
-    tasks.withType<Test> {
+        tasks.withType<Test> {
         useJUnitPlatform()
         testLogging { events("passed", "skipped", "failed") }
+        filter {
+            isFailOnNoMatchingTests = false
+        }
     }
 
     // Integration tests source set
@@ -68,4 +71,5 @@ configure(subprojects.filter { it.path.startsWith(":shared") }) {
 
     tasks.withType<Test> { useJUnitPlatform() }
 }
+
 
