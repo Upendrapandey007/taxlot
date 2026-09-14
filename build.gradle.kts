@@ -19,8 +19,19 @@ configure(subprojects.filter { it.path.startsWith(":services") }) {
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
 
-    configure<JavaPluginExtension> {
-        toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
+    val javaExtension = extensions.getByType<JavaPluginExtension>()
+    javaExtension.toolchain { languageVersion.set(JavaLanguageVersion.of(21)) }
+
+    val integrationTestSourceSet = javaExtension.sourceSets.create("integrationTest") {
+        compileClasspath += javaExtension.sourceSets["main"].output + javaExtension.sourceSets["test"].output
+        runtimeClasspath += javaExtension.sourceSets["main"].output + javaExtension.sourceSets["test"].output
+    }
+
+    configurations.named("integrationTestImplementation") {
+        extendsFrom(configurations["testImplementation"])
+    }
+    configurations.named("integrationTestRuntimeOnly") {
+        extendsFrom(configurations["testRuntimeOnly"])
     }
 
     // Consistent snake_case JSON + UTC timestamps for all services
@@ -36,21 +47,11 @@ configure(subprojects.filter { it.path.startsWith(":services") }) {
         }
     }
 
-    // Integration tests source set
-    sourceSets.create("integrationTest") {
-        compileClasspath += sourceSets["main"].output + sourceSets["test"].output
-        runtimeClasspath += sourceSets["main"].output + sourceSets["test"].output
-    }
-    configurations["integrationTestImplementation"]
-        .extendsFrom(configurations["testImplementation"])
-    configurations["integrationTestRuntimeOnly"]
-        .extendsFrom(configurations["testRuntimeOnly"])
-
     tasks.register<Test>("integrationTest") {
         description = "Runs integration tests"
         group       = "verification"
-        testClassesDirs = sourceSets["integrationTest"].output.classesDirs
-        classpath       = sourceSets["integrationTest"].runtimeClasspath
+        testClassesDirs = integrationTestSourceSet.output.classesDirs
+        classpath       = integrationTestSourceSet.runtimeClasspath
         useJUnitPlatform()
         filter {
             isFailOnNoMatchingTests = false
@@ -58,10 +59,10 @@ configure(subprojects.filter { it.path.startsWith(":services") }) {
         onlyIf {
             file("src/integrationTest").exists()
         }
-        shouldRunAfter(tasks["test"])
+        shouldRunAfter(tasks.named("test"))
     }
-
 }
+
 
 // -- Common config for shared library -----------------------------------------
 configure(subprojects.filter { it.path.startsWith(":shared") }) {
