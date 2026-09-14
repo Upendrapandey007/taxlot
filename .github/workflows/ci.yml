@@ -31,7 +31,7 @@ jobs:
       - uses: actions/setup-java@v4
         with: { java-version: "${{ env.JAVA_VERSION }}", distribution: temurin, cache: gradle }
       - run: chmod +x gradlew
-      - run: echo "=== RUNNING GRADLE BUILD ==="; ./gradlew :shared:platform:build --no-daemon --stacktrace || (echo "=== GRADLE FAILED ==="; exit 1)
+      - run: ./gradlew :shared:platform:build --no-daemon --stacktrace
 
   # ===========================================================================
   # Active Services — Full test suites
@@ -205,6 +205,10 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to:   type=gha,mode=max
+
+
+
+
 
 
 
