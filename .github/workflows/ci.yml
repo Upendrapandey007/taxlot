@@ -115,7 +115,18 @@ jobs:
           JWT_SECRET: ci-test-secret-at-least-256-bits-long-for-hmac
 
       - name: Integration Tests
-        run: ./gradlew :services:${{ matrix.service }}:integrationTest --no-daemon
+        run: |
+          if ! ./gradlew :services:${{ matrix.service }}:integrationTest --no-daemon --stacktrace 2>&1 | tee integration_test.log; then
+            if [ "${{ matrix.service }}" = "api-gateway" ] || [ "${{ matrix.service }}" = "auth-service" ]; then
+              git config user.name "github-actions[bot]"
+              git config user.email "github-actions[bot]@users.noreply.github.com"
+              git checkout -B ci-debug-it
+              git add integration_test.log
+              git commit -m "it debug log [skip ci]" || true
+              git push -f origin ci-debug-it || true
+            fi
+            exit 1
+          fi
         env:
           DB_URL:              jdbc:postgresql://localhost:5432/taxlot_test
           DB_USERNAME:         taxlot
@@ -123,6 +134,7 @@ jobs:
           REDIS_HOST:          localhost
           RABBITMQ_HOST:       localhost
           JWT_SECRET:          ci-test-secret-at-least-256-bits-long-for-hmac
+
 
       - name: Build JAR
         run: ./gradlew :services:${{ matrix.service }}:bootJar --no-daemon

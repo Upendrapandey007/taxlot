@@ -52,8 +52,15 @@ configure(subprojects.filter { it.path.startsWith(":services") }) {
         testClassesDirs = sourceSets["integrationTest"].output.classesDirs
         classpath       = sourceSets["integrationTest"].runtimeClasspath
         useJUnitPlatform()
+        filter {
+            isFailOnNoMatchingTests = false
+        }
+        onlyIf {
+            file("src/integrationTest").exists()
+        }
         shouldRunAfter(tasks["test"])
     }
+
 }
 
 // -- Common config for shared library -----------------------------------------
